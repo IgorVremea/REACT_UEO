@@ -13,11 +13,26 @@ function App() {
           .then(response => response.json())
           .then(data => setCountries(data));    
   }, []);
+
+  const groupedCountries = countries.reduce((acc, country) =>  {
+    if(!acc[country.region]){
+      acc[country.region] = [];
+    }
+    acc[country.region].push(country);
+    return acc;
+  }, {});
   return (
     <div className="App">
-      {countries.map(country => (
-        <div>
-            {country.name.common}
+      {Object.entries(groupedCountries).map(([region, countries]) => (
+        <div key = {region}>
+            <h2>{region}</h2>
+            <span>
+              {countries.map(country => (
+                <div key = {country.name.common}>
+                  <div>{country.name.common}</div>
+                </div>
+              ))}
+            </span>
         </div>
       ))}
     </div>
